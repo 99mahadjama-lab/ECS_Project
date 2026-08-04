@@ -66,3 +66,14 @@ resource "aws_iam_policy_attachment" "attach_policy" {
   roles       = [ aws_iam_role.ecr_push.name ]
   policy_arn = aws_iam_policy.push_to_ecr.arn
 }
+
+resource "aws_s3_bucket" "state-file-bucket" {
+  bucket = "ecs-bucket-${var.accountId}-${var.region}-an"
+  bucket_namespace = "account-regional"
+
+  tags = {
+    Name        = "${var.project_name}-stfb"
+    Environment = var.Environment
+    project_tag = var.project_name
+  }
+}

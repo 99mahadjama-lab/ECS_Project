@@ -1,0 +1,15 @@
+name: Build terraform infrastructure
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    name: build infrastructure and security scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+
+      - name: terraform security scan
+        uses: triat/terraform-security-scan@v3
+    

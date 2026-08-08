@@ -1,3 +1,4 @@
+#OIDC token creation
 resource "aws_iam_openid_connect_provider" "oidc_github" {
   url = "https://token.actions.githubusercontent.com"
 
@@ -5,7 +6,7 @@ resource "aws_iam_openid_connect_provider" "oidc_github" {
     "sts.amazonaws.com",
   ]
 }
-
+#IAM Role creation
 resource "aws_iam_role" "ecr_push" {
   name = "ecr_push"
   assume_role_policy = jsonencode(
@@ -66,7 +67,7 @@ resource "aws_iam_policy_attachment" "attach_policy" {
   roles       = [ aws_iam_role.ecr_push.name ]
   policy_arn = aws_iam_policy.push_to_ecr.arn
 }
-
+#S3 Bucket creation
 resource "aws_s3_bucket" "state-file-bucket" {
   bucket = "ecs-bucket-${var.accountId}-${var.region}-an"
   bucket_namespace = "account-regional"
@@ -76,4 +77,12 @@ resource "aws_s3_bucket" "state-file-bucket" {
     Environment = var.Environment
     project_tag = var.project_name
   }
+}
+#Ensuring S3 bucket ACL's cannot be ammended after creation
+resource "aws_s3_bucket_public_access_block" "bucket_access_block" {
+  bucket = aws_s3_bucket.state-file-bucket.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }

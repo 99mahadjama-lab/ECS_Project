@@ -49,6 +49,8 @@ module "ECS_Module" {
   target_group_arn          = module.ALB_Module.target_group_arn 
   private_subnet_1_CIDR     = module.VPC_Module.Private_Subnet_1_CIDR
   private_subnet_2_CIDR     = module.VPC_Module.Private_Subnet_2_CIDR
+  prefix_list               = module.ECR_Module.prefix_list.id
+  private_route             = module.VPC_Module.Private_Route
   log_group                 = module.CloudWatch_Module.log_group.id
   repo_url                  = module.ECR_Module.repo_url
   latest_tag                = var.latest_tag

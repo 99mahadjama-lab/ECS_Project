@@ -13,6 +13,9 @@ output "Public_Subnet_1" {
 output "Public_Subnet_2" {
   value = aws_subnet.Public_Subnet_2.id
 }
+output "Private_Route" {
+  value = aws_route_table.Private_Route.id
+}
 output "Private_Subnet_1_CIDR" {
   value = aws_subnet.Private_Subnet_1.cidr_block
 }

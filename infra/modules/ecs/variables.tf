@@ -10,6 +10,9 @@ variable "private_subnet_1_CIDR" {
 variable "private_subnet_2_CIDR" {
   type = string
 }
+variable "private_route" {
+  type = string
+}
 variable "alb_sg" {
   type = string
 }
@@ -54,5 +57,8 @@ variable "repo_url" {
   type = string
 }
 variable "latest_tag" {
+  type = string
+}
+variable "prefix_list" {
   type = string
 }

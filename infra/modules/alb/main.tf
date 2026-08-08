@@ -9,7 +9,7 @@ resource "aws_security_group" "ALB_SG" {
     from_port           = 443
     to_port             = 443
     protocol            = "tcp"
-    cidr_blocks         = ["0.0.0.0/0"] #tfsec:ignore aws-ec2-no-public-ingress-sgr
+    cidr_blocks         = ["0.0.0.0/0"] #tfsec:ignore:aws-ec2-no-public-ingress-sgr
   }
 
   ingress {

@@ -21,6 +21,6 @@ jobs:
         with:
           role-to-assume: ${{ secrets.TF_OPS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-          role-session-name: terraform build
+          role-session-name: terraform_build
         
     

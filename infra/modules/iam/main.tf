@@ -1,5 +1,5 @@
 #IAM Role
-data "aws_iam_policy" "ecs_read_only" {
+data "aws_iam_policy" "ecs_task_execute_policy" {
   arn                      = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 resource "aws_iam_role" "ecs_task_execute_role" {
@@ -21,5 +21,5 @@ resource "aws_iam_role" "ecs_task_execute_role" {
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_execute_role_policy_attachment" {
   role = aws_iam_role.ecs_task_execute_role.name
-  policy_arn = data.aws_iam_policy.ecs_read_only.arn
+  policy_arn = data.aws_iam_policy.ecs_task_execute_policy.arn
 }

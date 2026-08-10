@@ -172,7 +172,7 @@ resource "aws_ecs_service" "ecs_service" {
     container_port          = var.container_port
     target_group_arn        = var.target_group_arn
   }
-  # lifecycle {
-  #   ignore_changes = [ task_definition ]
-  # }
+  lifecycle {
+    ignore_changes = [ task_definition ]
+  }
 }

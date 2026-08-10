@@ -1,7 +1,7 @@
 variable "region" {
   type = string
 }
-variable "iam_role_arn" {
+variable "aws_acc_arn" {
   type = string
 }
 variable "github_repo" {

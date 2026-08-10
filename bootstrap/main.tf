@@ -6,7 +6,7 @@ resource "aws_iam_openid_connect_provider" "oidc_github" {
     "sts.amazonaws.com",
   ]
 }
-#IAM Role creation
+#IAM Role creation for ecr push
 resource "aws_iam_role" "ecr_push" {
   name = "ecr_push"
   assume_role_policy = jsonencode(
@@ -16,7 +16,7 @@ resource "aws_iam_role" "ecr_push" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Federated": "${var.iam_role_arn}:oidc-provider/token.actions.githubusercontent.com"
+        "Federated": "${var.aws_acc_arn}:oidc-provider/token.actions.githubusercontent.com"
       },
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
@@ -34,7 +34,6 @@ resource "aws_iam_role" "ecr_push" {
     tag-key     = "ecr_push"
   }
 }
-
 resource "aws_iam_policy" "push_to_ecr" {
   name = "push_to_ecr"
 
@@ -61,12 +60,98 @@ resource "aws_iam_policy" "push_to_ecr" {
     ]
   })
 }
-
-resource "aws_iam_policy_attachment" "attach_policy" {
-  name        = "attach_policy"
+resource "aws_iam_policy_attachment" "ecr_attach" {
+  name        = "ecr_attach_policy"
   roles       = [ aws_iam_role.ecr_push.name ]
   policy_arn = aws_iam_policy.push_to_ecr.arn
 }
+
+#IAM Role creation for tf apply
+resource "aws_iam_role" "tf_ops" {
+  name = "tf_ops"
+  assume_role_policy = jsonencode(
+    {
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "${var.aws_acc_arn}:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringLike": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          "token.actions.githubusercontent.com:sub": "${var.github_repo}:ref:${var.branch}"
+        }
+      }
+    }
+  ]
+})
+
+  tags = {
+    project_tag = "IT-Tools"
+    tag-key     = "tf_apply"
+  }
+}
+
+resource "aws_iam_policy" "terraform_ops" {
+  name = "terraform_ops_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "TerraformOpsBroad"
+        Effect   = "Allow"
+        Action   = [
+          "ec2:*",
+          "ecs:*",
+          "ecr:*",
+          "elasticloadbalancing:*",
+          "acm:*",
+          "logs:*",
+          "cloudwatch:*",
+          "sts:GetCallerIdentity"
+        ]
+        Resource = "*"
+      },
+      {
+        Sid      = "IAMPassRoleScoped"
+        Effect   = "Allow"
+        Action   = "iam:PassRole"
+        Resource = [
+          "arn:aws:iam::${var.accountId}:role/ecs_task_execute_role"### created by IAM module
+        ]
+      },
+      {
+        Sid      = "KMSScoped"
+        Effect   = "Allow"
+        Action   = [
+          "kms:CreateGrant",
+          "kms:DescribeKey"
+        ]
+        Resource = "arn:aws:kms:${var.region}:${var.accountId}:key/*"
+      },
+      {
+        Sid      = "S3StateBackendScoped"
+        Effect   = "Allow"
+        Action   = "s3:*"
+        Resource = [
+          "arn:aws:s3:::ecs-bucket-${var.accountId}-${var.region}-an",
+          "arn:aws:s3:::ecs-bucket-${var.accountId}-${var.region}-an/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy_attachment" "tf_ops_attach" {
+  name        = "tf_ops_attach_policy"
+  roles       = [ aws_iam_role.tf_ops.name ]
+  policy_arn = aws_iam_policy.terraform_ops.arn
+}
+
 #S3 Bucket creation
 resource "aws_s3_bucket" "state-file-bucket" {
   bucket = "ecs-bucket-${var.accountId}-${var.region}-an"

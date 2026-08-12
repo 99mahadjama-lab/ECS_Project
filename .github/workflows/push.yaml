@@ -31,18 +31,10 @@ jobs:
           severity-cutoff: high
           output-format: table
       
-      - name: Debug OIDC token
-        env:
-          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
-          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
-        run: |
-          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-          "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r '.value' | cut -d. -f2 | base64 -d | jq .
-      
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: ${{ secrets.ECR_PUSH_ROLE_ARN }}
+          role-to-assume: ${{ secrets.ECR_PUSH_TB_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: push_image
       

@@ -8,8 +8,6 @@ on:
       - infra/**
       - .tfsec/**
 
-
-
 permissions: 
   id-token: write
   contents: read

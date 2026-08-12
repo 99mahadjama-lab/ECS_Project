@@ -31,11 +31,6 @@ jobs:
           severity-cutoff: high
           output-format: table
       
-      - name: Confirm runner env vars
-        run: |
-          echo "github_repo=${TF_VAR_github_repo}"
-          echo "test_branch=${TF_VAR_test_branch}"
-
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:

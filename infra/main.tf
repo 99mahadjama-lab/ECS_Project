@@ -30,7 +30,7 @@ module "ALB_Module" {
   certificate_arn           = module.ACM_Module.certificate_arn
   cert_validated            = module.ACM_Module.cert_validated
 }
-#ECR
+#Calling ECR Module
 module "ECR_Module" {
   source                    = "./modules/ecr"
   repo_name                 = var.repo_name

@@ -32,6 +32,11 @@ jobs:
           role-to-assume: ${{ secrets.TF_OPS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: terraform_build
+      
+      - name: install terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.15.7"
 
       - name: initialise terraform working directory
         run: terraform init

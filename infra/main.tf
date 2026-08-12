@@ -56,7 +56,7 @@ module "ECS_Module" {
   latest_tag                = var.latest_tag
   depends_on                = [ module.ALB_Module , module.ECR_Module ]
 }
-#CloudWatch
+#Cloudwatch
 module "CloudWatch_Module" {
   source                    = "./modules/cloudwatch"
   project_tag               = var.project_tag

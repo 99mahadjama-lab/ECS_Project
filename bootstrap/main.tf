@@ -171,3 +171,64 @@ resource "aws_s3_bucket_public_access_block" "bucket_access_block" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+######OIDC for Test Branch########
+resource "aws_iam_role" "ecr_push_tb" {
+  name = "ecr_push_tb"
+  assume_role_policy = jsonencode(
+    {
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "${var.aws_acc_arn}:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringLike": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          "token.actions.githubusercontent.com:sub": "${var.github_repo}:ref:${var.test_branch}"
+        }
+      }
+    }
+  ]
+})
+
+  tags = {
+    project_tag = "IT-Tools"
+    tag-key     = "ecr_push_tb"
+  }
+}
+
+resource "aws_iam_policy" "push_to_ecr_tb" {
+  name = "push_to_ecr_tb"
+
+  policy = jsonencode({
+    "Version":"2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:CompleteLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:InitiateLayerUpload",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "${var.ecr_repo}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "ecr:GetAuthorizationToken",
+            "Resource": "*"
+        }
+    ]
+  })
+}
+
+resource "aws_iam_policy_attachment" "ecr_attach_tb" {
+  name        = "ecr_attach_policy_tb"
+  roles       = [ aws_iam_role.ecr_push_tb.name ]
+  policy_arn = aws_iam_policy.push_to_ecr_tb.arn
+}

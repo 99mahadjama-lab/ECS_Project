@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - infra/**
-      - .tfsec/**
 
 permissions: 
   id-token: write
@@ -39,6 +36,7 @@ jobs:
           terraform_version: "1.15.7"
 
       - name: initialise terraform working directory
+        working-directory: infra
         run: terraform init
 
       - name: check for syntax errors

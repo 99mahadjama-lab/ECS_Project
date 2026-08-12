@@ -6,65 +6,65 @@ resource "aws_iam_openid_connect_provider" "oidc_github" {
     "sts.amazonaws.com",
   ]
 }
-#IAM Role creation for ecr push
-resource "aws_iam_role" "ecr_push" {
-  name = "ecr_push"
-  assume_role_policy = jsonencode(
-    {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "${var.aws_acc_arn}:oidc-provider/token.actions.githubusercontent.com"
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringLike": {
-          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-          "token.actions.githubusercontent.com:sub": "${var.github_repo}:ref:${var.branch}"
-        }
-      }
-    }
-  ]
-})
+# #IAM Role creation for ecr push
+# resource "aws_iam_role" "ecr_push" {
+#   name = "ecr_push"
+#   assume_role_policy = jsonencode(
+#     {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Effect": "Allow",
+#       "Principal": {
+#         "Federated": "${var.aws_acc_arn}:oidc-provider/token.actions.githubusercontent.com"
+#       },
+#       "Action": "sts:AssumeRoleWithWebIdentity",
+#       "Condition": {
+#         "StringLike": {
+#           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+#           "token.actions.githubusercontent.com:sub": "${var.github_repo}:ref:${var.branch}"
+#         }
+#       }
+#     }
+#   ]
+# })
 
-  tags = {
-    project_tag = "IT-Tools"
-    tag-key     = "ecr_push"
-  }
-}
-resource "aws_iam_policy" "push_to_ecr" {
-  name = "push_to_ecr"
+#   tags = {
+#     project_tag = "IT-Tools"
+#     tag-key     = "ecr_push"
+#   }
+# }
+# resource "aws_iam_policy" "push_to_ecr" {
+#   name = "push_to_ecr"
 
-  policy = jsonencode({
-    "Version":"2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ecr:CompleteLayerUpload",
-                "ecr:UploadLayerPart",
-                "ecr:InitiateLayerUpload",
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:PutImage",
-                "ecr:BatchGetImage"
-            ],
-            "Resource": "${var.ecr_repo}"
-        },
-        {
-            "Effect": "Allow",
-            "Action": "ecr:GetAuthorizationToken",
-            "Resource": "*"
-        }
-    ]
-  })
-}
-resource "aws_iam_policy_attachment" "ecr_attach" {
-  name        = "ecr_attach_policy"
-  roles       = [ aws_iam_role.ecr_push.name ]
-  policy_arn = aws_iam_policy.push_to_ecr.arn
-}
+#   policy = jsonencode({
+#     "Version":"2012-10-17",
+#     "Statement": [
+#         {
+#             "Effect": "Allow",
+#             "Action": [
+#                 "ecr:CompleteLayerUpload",
+#                 "ecr:UploadLayerPart",
+#                 "ecr:InitiateLayerUpload",
+#                 "ecr:BatchCheckLayerAvailability",
+#                 "ecr:PutImage",
+#                 "ecr:BatchGetImage"
+#             ],
+#             "Resource": "${var.ecr_repo}"
+#         },
+#         {
+#             "Effect": "Allow",
+#             "Action": "ecr:GetAuthorizationToken",
+#             "Resource": "*"
+#         }
+#     ]
+#   })
+# }
+# resource "aws_iam_policy_attachment" "ecr_attach" {
+#   name        = "ecr_attach_policy"
+#   roles       = [ aws_iam_role.ecr_push.name ]
+#   policy_arn = aws_iam_policy.push_to_ecr.arn
+# }
 
 #IAM Role creation for tf apply
 resource "aws_iam_role" "tf_ops" {

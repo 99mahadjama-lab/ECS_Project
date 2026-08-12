@@ -1,6 +1,14 @@
 name: Build terraform infrastructure
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - infra/**
+      - .tfsec/**
+
+
 
 permissions: 
   id-token: write
@@ -26,5 +34,14 @@ jobs:
           role-to-assume: ${{ secrets.TF_OPS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: terraform_build
+
+      - name: initialise terraform working directory
+        run: terraform init
+
+      - name: check for syntax errors
+        run: terraform validate
+      
+
+
         
     

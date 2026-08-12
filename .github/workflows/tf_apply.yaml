@@ -1,9 +1,8 @@
-name: Build terraform infrastructure
+name: Build terraform infrastructure in production environment
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    
 
 permissions: 
   id-token: write
@@ -11,11 +10,17 @@ permissions:
 
 env:
   AWS_REGION: eu-west-2
+  ECR_REPO: it-tools-repo
 
 jobs:
   build:
     name: build infrastructure and security scan
     runs-on: ubuntu-latest
+  
+    defaults:
+      run:
+        working-directory: infra
+    
     steps:
       - name: checkout
         uses: actions/checkout@v6
@@ -30,10 +35,24 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: terraform_build
       
+      - name: pull latest production image tag from ecr repo
+        id: latest_image
+        run: |
+          echo "image_tag=$(aws ecr describe-images --repository-name ${{ env.ECR_REPO }} | 
+          jq -r '[.imageDetails[] | select(.imageTags[]|startswith("prod-"))]|
+          sort_by(.imagePushedAt)|last|.imageTags[]|
+          select(startswith("prod-"))')" >> "$GITHUB_OUTPUT"
+     
       - name: install terraform
         uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: "1.15.7"
+      
+      - name: create tfvars file
+        run: |
+          cat <<'EOF' > terraform.tfvars
+          ${{ secrets.TF_VARS }}
+          EOF
 
       - name: initialise terraform working directory
         working-directory: infra
@@ -41,6 +60,12 @@ jobs:
 
       - name: check for syntax errors
         run: terraform validate
+      
+      - name: run terraform apply
+        run: |
+          terraform apply --autoapprove -input=false 
+          -var="latest_tag=${{ steps.latest_image.outputs.image_tag }}" 
+
       
 
 

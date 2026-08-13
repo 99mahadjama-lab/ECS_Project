@@ -112,17 +112,11 @@ resource "aws_iam_policy" "terraform_ops" {
           "acm:*",
           "logs:*",
           "cloudwatch:*",
+          "route53:*",
+          "iam:*",
           "sts:GetCallerIdentity"
         ]
         Resource = "*"
-      },
-      {
-        Sid      = "IAMPassRoleScoped"
-        Effect   = "Allow"
-        Action   = "iam:PassRole"
-        Resource = [
-          "arn:aws:iam::${var.accountId}:role/ecs_task_execute_role"### created by IAM module
-        ]
       },
       {
         Sid      = "KMSScoped"

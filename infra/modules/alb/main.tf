@@ -26,7 +26,6 @@ resource "aws_security_group" "ALB_SG" {
     to_port             = 80
     protocol            = "tcp"
     cidr_blocks         = [var.private_subnet_1_CIDR , var.private_subnet_2_CIDR]
-
   }
 
   tags = {
@@ -38,7 +37,7 @@ resource "aws_security_group" "ALB_SG" {
 #Target Group
 resource "aws_lb_target_group" "Target_Group" {
   name                  = "IT-Tools-TG"
-  port                  = 80
+  port                  = 3000
   protocol              = "HTTP"
   vpc_id                = var.vpc_id
   target_type           = "ip"

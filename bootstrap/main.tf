@@ -113,6 +113,7 @@ resource "aws_iam_policy" "terraform_ops" {
           "logs:*",
           "cloudwatch:*",
           "route53:*",
+          "route53domains:*",
           "iam:*",
           "sts:GetCallerIdentity"
         ]

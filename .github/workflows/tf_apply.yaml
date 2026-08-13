@@ -42,6 +42,9 @@ jobs:
           jq -r '[.imageDetails[] | select(.imageTags[]|startswith("prod-"))]|
           sort_by(.imagePushedAt)|last|.imageTags[]|
           select(startswith("prod-"))')" >> "$GITHUB_OUTPUT"
+
+      - name: print latest image tag
+        run: echo "${{ steps.latest_image.outputs.image_tag }}" 
      
       - name: install terraform
         uses: hashicorp/setup-terraform@v4

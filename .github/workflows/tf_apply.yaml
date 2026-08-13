@@ -66,7 +66,7 @@ jobs:
       
       - name: run terraform apply
         run: |
-          terraform apply --auto-approve -input=false 
+          terraform apply --auto-approve -input=false \
           -var="latest_tag=${{ steps.latest_image.outputs.image_tag }}" 
 
       

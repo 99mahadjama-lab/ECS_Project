@@ -31,6 +31,6 @@ variable "certificate_arn" {
 variable "cert_validated" {
   type = any
 }
-variable "dev_ip" {
-  type = string
+variable "container_port" {
+  type = number
 }

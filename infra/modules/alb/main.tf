@@ -12,14 +12,6 @@ resource "aws_security_group" "ALB_SG" {
     cidr_blocks         = ["0.0.0.0/0"] #tfsec:ignore:aws-ec2-no-public-ingress-sgr
   }
 
-  ingress {
-    description         = "allow ping from Dev"
-    from_port           = -1
-    to_port             = -1
-    protocol            = "icmp"
-    cidr_blocks         = [var.dev_ip]
-  }
-
   egress {
     description         = "Outbound HTTP" 
     from_port           = 80
@@ -37,7 +29,7 @@ resource "aws_security_group" "ALB_SG" {
 #Target Group
 resource "aws_lb_target_group" "Target_Group" {
   name                  = "IT-Tools-TG"
-  port                  = 3000
+  port                  = var.container_port
   protocol              = "HTTP"
   vpc_id                = var.vpc_id
   target_type           = "ip"
@@ -48,7 +40,7 @@ resource "aws_lb_target_group" "Target_Group" {
     interval            = 30
     path                = "/health"
     port                = "traffic-port"
-    unhealthy_threshold = 2
+    unhealthy_threshold = 3
     timeout             = 5
   }
 

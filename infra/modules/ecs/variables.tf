@@ -29,11 +29,9 @@ variable "memory" {
 }
 variable "host_port" {
   type = number
-  default = "3000"
 }
 variable "container_port" {
   type = number
-  default = "3000"
 }
 variable "execution_role_arn" {
   type = string

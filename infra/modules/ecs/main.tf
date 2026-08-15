@@ -5,6 +5,7 @@ resource "aws_security_group" "ECS_SG" {
   vpc_id                = var.vpc_id
 
   ingress {
+    description         = "allow HTTP traffic to task"
     from_port           = 80
     to_port             = 80
     protocol            = "tcp"
@@ -172,7 +173,7 @@ resource "aws_ecs_service" "ecs_service" {
     container_port          = var.container_port
     target_group_arn        = var.target_group_arn
   }
-  lifecycle {
-    ignore_changes = [ task_definition ]
-  }
+  # lifecycle {
+  #   ignore_changes = [ task_definition ]
+  # }
 }

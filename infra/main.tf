@@ -19,7 +19,6 @@ module "ALB_Module" {
   source                    = "./modules/alb"
   project_tag               = var.project_tag
   my_domain                 = var.my_domain
-  dev_ip                    = var.dev_ip
   vpc_id                    = module.VPC_Module.VPC_ID
   public_subnet_1           = module.VPC_Module.Public_Subnet_1
   public_subnet_2           = module.VPC_Module.Public_Subnet_2
@@ -29,6 +28,7 @@ module "ALB_Module" {
   subdomain                 = module.ACM_Module.Subdomain
   certificate_arn           = module.ACM_Module.certificate_arn
   cert_validated            = module.ACM_Module.cert_validated
+  container_port            = var.container_port
 }
 #Calling ECR Module
 module "ECR_Module" {
@@ -54,6 +54,8 @@ module "ECS_Module" {
   log_group                 = module.CloudWatch_Module.log_group.id
   repo_url                  = module.ECR_Module.repo_url
   latest_tag                = var.latest_tag
+  container_port            = var.container_port
+  host_port                 = var.host_port
   depends_on                = [ module.ALB_Module , module.ECR_Module ]
 }
 #Cloudwatch

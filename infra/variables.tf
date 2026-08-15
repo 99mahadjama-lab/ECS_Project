@@ -16,3 +16,9 @@ variable "repo_name" {
 variable "latest_tag" {
   type = string
 }
+variable "host_port" {
+  type = number
+}
+variable "container_port" {
+  type = number
+}

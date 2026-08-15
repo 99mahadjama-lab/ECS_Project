@@ -11,6 +11,14 @@ resource "aws_security_group" "ECS_SG" {
     protocol            = "tcp"
     security_groups     = [ var.alb_sg ]
   }
+    
+    ingress {
+    description         = "allow health check from alb"
+    from_port           = var.container_port
+    to_port             = var.container_port
+    protocol            = "tcp"
+    security_groups     = [ var.alb_sg ]
+  }
 
   tags = {
     Name                = "ECS_SG"

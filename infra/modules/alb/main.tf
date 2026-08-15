@@ -19,6 +19,14 @@ resource "aws_security_group" "ALB_SG" {
     protocol            = "tcp"
     cidr_blocks         = [var.private_subnet_1_CIDR , var.private_subnet_2_CIDR]
   }
+  
+    egress {
+    description         = "Allow health check" 
+    from_port           = var.container_port
+    to_port             = var.container_port
+    protocol            = "tcp"
+    cidr_blocks         = [var.private_subnet_1_CIDR , var.private_subnet_2_CIDR]
+  }
 
   tags = {
     Name                = "ALB_SG"

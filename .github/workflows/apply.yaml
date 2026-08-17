@@ -12,6 +12,10 @@ env:
   AWS_REGION: eu-west-2
   ECR_REPO: it-tools-repo
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: build infrastructure and security scan

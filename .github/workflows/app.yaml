@@ -1,0 +1,57 @@
+name: Build and Push app to ECR
+
+on: workflow_dispatch
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: eu-west-2
+  IMAGE_NAME: it-tools
+  IMAGE_TAG: ${{ github.sha }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build, scan and push
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+  
+      - name: build docker image
+        run:
+            docker build -t $IMAGE_NAME:$IMAGE_TAG .
+      
+      - name: Scan image #Grype Scanner
+        uses: anchore/scan-action@v7
+        with:
+          image: "${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
+          fail-build: true
+          severity-cutoff: high
+          output-format: table
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.ECR_PUSH_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: push_image
+      
+      - name: Login to aws ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Tag and push image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPO: it-tools-repo
+        run: |
+          docker tag $IMAGE_NAME:$IMAGE_TAG $REGISTRY/$REPO:prod-$IMAGE_TAG
+          docker push $REGISTRY/$REPO:prod-$IMAGE_TAG
+
+

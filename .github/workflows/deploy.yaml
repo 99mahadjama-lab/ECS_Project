@@ -3,8 +3,8 @@ name: CD - Deploy to ECS
 on:
   workflow_run:
     workflows: ["CI - Build, Scan & Push"]
-    types: completed
-    branches: [Main]
+    types: [completed]
+    branches: [main]
 
 env:
   AWS_REGION: eu-west-2

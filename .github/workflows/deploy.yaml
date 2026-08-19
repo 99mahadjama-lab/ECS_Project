@@ -33,4 +33,6 @@ jobs:
           if [ "$STATUS" != "ACTIVE" ]; then
           echo "Cluster not active"
           exit 0
+          else
+          echo "Cluster active, proceed to update task definition"
           fi

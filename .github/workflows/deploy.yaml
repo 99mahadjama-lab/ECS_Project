@@ -9,6 +9,8 @@ on:
 
 env:
   AWS_REGION: eu-west-2
+  CLUSTER_NAME: IT-Tools-Cluster
+
 
 permissions: 
   id-token: write
@@ -33,7 +35,7 @@ jobs:
       
       - name: confirm infrastructure exists
         run: |
-          STATUS=$(aws ecs describe-clusters --clusters your-cluster-name --query "clusters[0].status" --output text)
+          STATUS=$(aws ecs describe-clusters --clusters ${{ env.CLUSTER_NAME }} --query "clusters[0].status" --output text)
           if [ "$STATUS" != "ACTIVE" ]; then
           echo "Cluster not active"
           exit 0

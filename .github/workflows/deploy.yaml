@@ -25,7 +25,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.TF_OPS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-          role-session-name: update task definition
+          role-session-name: update_task_definition
       
       - name: confirm infrastructure exists
         run: |

@@ -1,0 +1,37 @@
+name: CD - Deploy to ECS
+
+on:
+  workflow_run:
+    workflows: ["CI - Build, Scan & Push"]
+    types: completed
+    branches: [Main]
+
+env:
+  AWS_REGION: eu-west-2
+  
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy image to ECS
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.TF_OPS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: update task definition
+      
+      - name: confirm infrastructure exists
+        env: 
+          run: STATUS=$(aws ecs describe-clusters --clusters your-cluster-name --query "clusters[0].status" --output text)
+        run: |
+          if [ "$STATUS" != "ACTIVE" ]; then
+          echo "Cluster not active"
+          exit 0
+          fi

@@ -28,9 +28,8 @@ jobs:
           role-session-name: update task definition
       
       - name: confirm infrastructure exists
-        env: 
-          run: STATUS=$(aws ecs describe-clusters --clusters your-cluster-name --query "clusters[0].status" --output text)
         run: |
+          STATUS=$(aws ecs describe-clusters --clusters your-cluster-name --query "clusters[0].status" --output text)
           if [ "$STATUS" != "ACTIVE" ]; then
           echo "Cluster not active"
           exit 0

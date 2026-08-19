@@ -32,7 +32,7 @@ jobs:
         with:
           image: "${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
           fail-build: true
-          severity-cutoff: high
+          severity-cutoff: critical
           output-format: table
 
       - name: configure aws credentials

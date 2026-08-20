@@ -36,8 +36,7 @@ jobs:
       - name: Confirm cluster is active
         id: cluster_check
         run: |
-          STATUS=$(aws ecs describe-clusters --clusters ${{ env.CLUSTER_NAME }} \ 
-          --query "clusters[0].status" --output text)
+          STATUS=$(aws ecs describe-clusters --clusters ${{ env.CLUSTER_NAME }} --query "clusters[0].status" --output text)
           if [ "$STATUS" != "ACTIVE" ]; then
           echo "Cluster not found or inactive. Aborting deploy"
           exit 0

@@ -46,9 +46,9 @@ jobs:
           fi
       
       - name: Fetch Task definition
-      - if: steps.cluster_check.outcome == 'success'
+        if: steps.cluster_check.outcome == 'success'
         run: |
           aws ecs describe-task-definition \
-          -- task-definition ${{ env.TASK_DEF }} \
-          > task-definition.json
+          --task-definition ${{ env.TASK_DEF }} \
+          > task-definition
 

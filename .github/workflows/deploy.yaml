@@ -9,7 +9,9 @@ on:
 env:
   AWS_REGION: eu-west-2
   CLUSTER_NAME: IT-Tools-Cluster
+  CONTAINER: IT-Tools-Container
   TASK_DEF: IT-Tools-TD
+  IMAGE_TAG: ${{ github.sha }}
 
 
 permissions: 
@@ -45,9 +47,18 @@ jobs:
           fi
       
       - name: Fetch Task definition
+        id: fetch_td
         if: steps.cluster_check.outcome == 'success'
         run: |
           aws ecs describe-task-definition \
           --task-definition ${{ env.TASK_DEF }} \
-          > task-definition
+          > task-definition.json
+
+      - name: Render Amazon ECS task definition
+        if: steps.fetch_td.outcome == 'success'
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+         task-definition: task-definition.json
+         container-name: ${{ env.CONTAINER }}
+         image: ${{ secrets.IMAGE_URI_PREFIX }}:prod-${{ env.IMAGE_TAG }}
 

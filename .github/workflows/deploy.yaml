@@ -51,8 +51,8 @@ jobs:
         if: steps.cluster_check.outcome == 'success'
         run: |
           aws ecs describe-task-definition \
-          --task-definition ${{ env.TASK_DEF }} \ 
-          --query taskDefintion > task-definition.json
+          --task-definition ${{ env.TASK_DEF }} \
+          --query taskDefinition > task-definition.json
 
       - name: Render Amazon ECS task definition
         if: steps.fetch_td.outcome == 'success'

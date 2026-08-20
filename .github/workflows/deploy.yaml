@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy image to ECS
+    name: Deploy image to ECS 
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:

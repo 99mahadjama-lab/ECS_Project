@@ -1,15 +1,15 @@
 name: CD - Deploy to ECS
 
 on:
-  push
-  # workflow_run:
-  #   workflows: ["CI - Build, Scan & Push"]
-  #   types: [completed]
-  #   branches: [main]
+  workflow_run:
+    workflows: ["CI - Build, Scan & Push"]
+    types: [completed]
+    branches: [main]
 
 env:
   AWS_REGION: eu-west-2
   CLUSTER_NAME: IT-Tools-Cluster
+  TASK_DEF: IT-Tools-TD
 
 
 permissions: 
@@ -24,7 +24,7 @@ jobs:
   deploy:
     name: Deploy image to ECS
     runs-on: ubuntu-latest
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v6
@@ -33,12 +33,22 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: update_task_definition
       
-      - name: confirm infrastructure exists
+      - name: Confirm cluster is active
+        id: cluster_check
         run: |
-          STATUS=$(aws ecs describe-clusters --clusters ${{ env.CLUSTER_NAME }} --query "clusters[0].status" --output text)
+          STATUS=$(aws ecs describe-clusters --clusters ${{ env.CLUSTER_NAME }} \ 
+          --query "clusters[0].status" --output text)
           if [ "$STATUS" != "ACTIVE" ]; then
-          echo "Cluster not active"
+          echo "Cluster not found or inactive. Aborting deploy"
           exit 0
           else
-          echo "Cluster active, proceed to update task definition"
+          echo "ECS cluster is active — proceeding with deployment."
           fi
+      
+      - name: Fetch Task definition
+      - if: steps.cluster_check.outcome == 'success'
+        run: |
+          aws ecs describe-task-definition \
+          -- task-definition ${{ env.TASK_DEF }} \
+          > task-definition.json
+

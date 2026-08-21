@@ -36,14 +36,12 @@ jobs:
           role-session-name: update_task_definition
          
       - name: Fetch Task definition
-        id: fetch_td
         run: |
           aws ecs describe-task-definition \
           --task-definition ${{ env.TASK_DEF }} \
           --query taskDefinition > task-definition.json
 
       - name: Render Amazon ECS task definition
-        # if: steps.fetch_td.outcome == 'success'
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
          task-definition: task-definition.json

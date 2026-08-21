@@ -8,8 +8,9 @@ on:
 
 env:
   AWS_REGION: eu-west-2
-  CLUSTER_NAME: IT-Tools-Cluster
+  CLUSTER: IT-Tools-Cluster
   CONTAINER: IT-Tools-Container
+  SERVICE: IT-Tools_cluster_service
   TASK_DEF: IT-Tools-TD
   IMAGE_TAG: ${{ github.sha }}
 
@@ -48,3 +49,11 @@ jobs:
          container-name: ${{ env.CONTAINER }}
          image: ${{ secrets.IMAGE_URI_PREFIX }}:prod-${{ env.IMAGE_TAG }}
 
+      - name: Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: task-definition.json
+          service: ${{ env.SERVICE }}
+          cluster: ${{ env.CLUSTER }}
+          wait-for-service-stability: true
+          wait-max-delay-seconds: 15

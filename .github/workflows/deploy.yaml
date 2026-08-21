@@ -34,28 +34,16 @@ jobs:
           role-to-assume: ${{ secrets.TF_OPS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: update_task_definition
-      
-      - name: Confirm cluster is Active
-        id: cluster_check
-        run: |
-          STATUS=$(aws ecs describe-clusters --clusters ${{ env.CLUSTER_NAME }} --query "clusters[0].status" --output text)
-          if [ "$STATUS" != "ACTIVE" ]; then
-          echo "Cluster not found or inactive. Aborting deploy"
-          exit 0
-          else
-          echo "ECS cluster is active — proceeding with deployment."
-          fi
-      
+         
       - name: Fetch Task definition
         id: fetch_td
-        if: steps.cluster_check.outcome == 'success'
         run: |
           aws ecs describe-task-definition \
           --task-definition ${{ env.TASK_DEF }} \
           --query taskDefinition > task-definition.json
 
       - name: Render Amazon ECS task definition
-        if: steps.fetch_td.outcome == 'success'
+        # if: steps.fetch_td.outcome == 'success'
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
          task-definition: task-definition.json

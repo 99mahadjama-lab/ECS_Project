@@ -56,6 +56,7 @@ jobs:
           role-session-name: terraform_destroy
       
       - name: pull current task definition image tag
+        id: latest_image
         run: |
           echo "image_tag=$(aws ecs describe-task-definition \
           --task-definition $(aws ecs describe-services \

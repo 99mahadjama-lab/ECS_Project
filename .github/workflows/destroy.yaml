@@ -19,13 +19,13 @@ on:
   workflow_dispatch:
     inputs:
       confirm:
-        description: "Type 'Confirm Terraform Destroy' to trigger workflow"
+        description: "Type 'Confirm Destroy' to trigger workflow"
         required: true
         type: string
 
 jobs:
   cancel:
-    if: ${{ github.event.inputs.confirm != 'Confirm Terraform Destroy' }}
+    if: ${{ github.event.inputs.confirm != 'Confirm Destroy' }}
     name: cancel workflow
     runs-on: ubuntu-latest
     

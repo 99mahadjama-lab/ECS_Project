@@ -36,7 +36,7 @@ jobs:
           Re-run and enter the exact phrase to proceed." >> $GITHUB_STEP_SUMMARY
 
   destroy:
-    if: ${{ github.event.inputs.confirm == 'Confirm Terraform Destroy' }}
+    if: ${{ github.event.inputs.confirm == 'Confirm Destroy' }}
     name: destroy app infrastructure
     runs-on: ubuntu-latest
     

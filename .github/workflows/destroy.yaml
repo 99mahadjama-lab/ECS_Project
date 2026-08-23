@@ -1,0 +1,28 @@
+name: Terraform Destroy Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type 'Confirm Terraform Destroy' to trigger workflow"
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  destroy:
+    name: destroy app infrastructure
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: infra
+  
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+
+

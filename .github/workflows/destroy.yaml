@@ -13,6 +13,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  cancel:
+    if: ${{ github.event.inputs.confirm != 'Confirm Terraform Destroy' }}
+    name: cancel workflow
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: cancel workflow error message
+        run: echo " Confirmation phrase did not match. \
+          Terraform destroy was not triggered — re-run and enter the exact phrase to proceed."
+
   destroy:
     if: ${{ github.event.inputs.confirm == 'Confirm Terraform Destroy' }}
     name: destroy app infrastructure

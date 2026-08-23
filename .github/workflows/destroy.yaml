@@ -20,9 +20,9 @@ jobs:
     
     steps:
       - name: Terraform destroy not triggered
-        run: echo " Confirmation phrase did not match.
+        run: echo "##Confirmation phrase did not match.
           Terraform destroy was not triggered. 
-          Re-run and enter the exact phrase to proceed."
+          Re-run and enter the exact phrase to proceed." >> $GITHUB_STEP_SUMMARY
 
   destroy:
     if: ${{ github.event.inputs.confirm == 'Confirm Terraform Destroy' }}

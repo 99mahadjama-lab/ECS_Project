@@ -1,4 +1,4 @@
-name: Build AWS Infrastructure
+name: Terraform Apply Pipeline
 
 on:
   workflow_dispatch:
@@ -37,7 +37,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.TF_OPS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-          role-session-name: terraform_build
+          role-session-name: terraform_apply
       
       - name: pull latest production image tag from ecr repo
         id: latest_image

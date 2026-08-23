@@ -1,5 +1,20 @@
 name: Terraform Destroy Pipeline
 
+permissions: 
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: eu-west-2
+  ECR_REPO: it-tools-repo
+  CLUSTER: IT-Tools-Cluster
+  CONTAINER: IT-Tools-Container
+  SERVICE: IT-Tools_cluster_service
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,10 +22,6 @@ on:
         description: "Type 'Confirm Terraform Destroy' to trigger workflow"
         required: true
         type: string
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   cancel:
@@ -36,5 +47,26 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v6
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.TF_OPS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: terraform_destroy
+      
+      - name: pull current task definition image tag
+        run: |
+          echo "image_tag=$(aws ecs describe-task-definition \
+          --task-definition $(aws ecs describe-services \
+          --cluster ${{ env.CLUSTER }} --services ${{ env.SERVICE }} \
+          --query 'services[0].taskDefinition' --output text) \
+          --query 'taskDefinition.containerDefinitions[0].image' \
+          --output json | jq -r 'split(":") | last') >> "$GITHUB_OUTPUT"
+      
+      - name: print latest image tag
+        run: echo "${{ steps.latest_image.outputs.image_tag }}" 
+    
+
 
 

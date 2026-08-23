@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   destroy:
+    if: ${{ github.event.inputs.confirm == 'Confirm Terraform Destroy' }}
     name: destroy app infrastructure
     runs-on: ubuntu-latest
     

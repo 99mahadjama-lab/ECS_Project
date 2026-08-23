@@ -67,7 +67,26 @@ jobs:
       
       - name: print latest image tag
         run: echo "${{ steps.latest_image.outputs.image_tag }}" 
-    
+      
+      - name: install terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.15.7"
 
+      - name: create tfvars file
+        run: |
+          cat <<'EOF' > terraform.tfvars
+          ${{ secrets.TF_VARS }}
+          EOF
 
+      - name: initialise terraform working directory
+        working-directory: infra
+        run: terraform init
 
+      - name: check for syntax errors
+        run: terraform validate
+
+      - name: run terraform destroy
+        run: |
+          terraform destroy --auto-approve -input=false \
+          -var="latest_tag=${{ steps.latest_image.outputs.image_tag }}" 

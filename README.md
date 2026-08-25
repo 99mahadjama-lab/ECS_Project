@@ -4,11 +4,11 @@ This project demonstrates a full production-grade AWS deployment pipeline for IT
 
 ## App Demo
 
-link
+<img width="1716" height="566" alt="Screenshot 2026-08-25 at 17 06 50" src="https://github.com/user-attachments/assets/0ccb194e-e250-454b-8bae-10adbac60140" />
 
 ## Architecture Diagram
 
-link
+<img width="750" height="828" alt="Screenshot 2026-08-25 at 13 49 15" src="https://github.com/user-attachments/assets/b943d6f9-de3c-42d4-a646-48440d40dc90" />
 
 ### Infrastructure Overview
 
@@ -107,32 +107,36 @@ Before the Terraform Apply workflow can run, the [bootstrap](bootstrap/bootstrap
 ## Pipeline Screenshots
 
 CI – Build, Scan & Push
+
 Successful run showing the build, Grype vulnerability scan, and image push to ECR all passing.
 
-Show Image
+<img width="3432" height="1610" alt="image" src="https://github.com/user-attachments/assets/c1bef75e-bd1f-4bdb-b075-f9f4c4256c1d" />
 
 CD – Deploy to ECS
+
 Successful run rendering the new task definition and deploying it to the ECS service.
 
-Show Image
+<img width="3418" height="1002" alt="image" src="https://github.com/user-attachments/assets/716420cf-2d85-4e52-a359-35f78d133b5e" />
 
 Terraform Apply Pipeline
+
 Successful run showing the security scan followed by terraform apply provisioning the infrastructure.
 
-Show Image
+<img width="3392" height="1658" alt="image" src="https://github.com/user-attachments/assets/a7e5b1bb-82a2-4626-a062-4177068f28e5" />
 
 Terraform Destroy Pipeline — safety gate
+
 A run where the confirmation phrase didn't match, so the destroy step was correctly skipped.
 
-Show Image
+<img width="3436" height="1342" alt="image" src="https://github.com/user-attachments/assets/3f4332e0-418e-4969-9531-246f06b25a61" />
 
 Terraform Destroy Pipeline — successful run
+
 A run with the correct confirmation phrase, showing terraform destroy executing successfully.
 
-Show Image
+<img width="3214" height="968" alt="image" src="https://github.com/user-attachments/assets/9de668f0-d49a-41ba-a1bf-b0fb3b5d0d36" />
 
-Adjust the file paths/names to whatever you actually commit into docs/.
-
+<img width="3400" height="1568" alt="image" src="https://github.com/user-attachments/assets/88c61c28-8ee7-4308-b008-f2949b80de01" />
 
 ## Considerations
 

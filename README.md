@@ -61,6 +61,7 @@ ECS_Project/
     │   ├── cloudwatch
     │   ├── ecr
     │   ├── ecs
+    │   ├── iam
     │   └── vpc
     ├── outputs.tf
     ├── provider.tf
@@ -98,3 +99,32 @@ Infrastructure is provisioned across modular Terraform configs — see [terrafor
 | CD – Deploy to ECS | CD | Fetches the current task definition, renders the new image into it, and deploys to ECS |
 | Terraform Apply | CD | Applies infrastructure changes to AWS |
 | Terraform Destroy | CD | Tears down AWS infrastructure, gated behind a confirmation phrase |
+
+##Pipeline Screenshots
+
+CI – Build, Scan & Push
+Successful run showing the build, Grype vulnerability scan, and image push to ECR all passing.
+
+Show Image
+
+CD – Deploy to ECS
+Successful run rendering the new task definition and deploying it to the ECS service.
+
+Show Image
+
+Terraform Apply Pipeline
+Successful run showing the security scan followed by terraform apply provisioning the infrastructure.
+
+Show Image
+
+Terraform Destroy Pipeline — safety gate
+A run where the confirmation phrase didn't match, so the destroy step was correctly skipped.
+
+Show Image
+
+Terraform Destroy Pipeline — successful run
+A run with the correct confirmation phrase, showing terraform destroy executing successfully.
+
+Show Image
+
+Adjust the file paths/names to whatever you actually commit into docs/.

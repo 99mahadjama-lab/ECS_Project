@@ -37,6 +37,7 @@ ECS_Project/
 ├── Dockerfile
 ├── docker.md
 ├── .github
+│   ├──CICD.md
 │   └── workflows
 │       ├── app.yaml
 │       ├── apply.yaml
@@ -91,7 +92,9 @@ No environment variables required — the app runs standalone.
 Infrastructure is provisioned across modular Terraform configs — see [terraform.md](infra/terraform.md) for the full breakdown.
 
 ## CI/CD
+Four workflows handle build, scan, push, deploy, and infrastructure lifecycle end-to-end via GitHub Actions — see [CICD.md](.github/CICD.md) for the full breakdown, including prerequisites and the fetch-image-tag logic each one uses.
 
+### CI/CD Pipelines
 ### CI/CD Pipelines
 | Workflow | Type | Purpose |
 |---|---|---|
@@ -128,3 +131,20 @@ A run with the correct confirmation phrase, showing terraform destroy executing 
 Show Image
 
 Adjust the file paths/names to whatever you actually commit into docs/.
+
+
+## Considerations
+
+- **Terraform version**: pinned to `1.15.7` throughout — set via `hashicorp/setup-terraform@v4` in both the Apply and Destroy pipelines, matching the version used locally when the `infra/` stack was originally built. Use the same version locally to avoid state/provider drift.
+- **Grype scan can fail the build on base-image CVEs.** CI is configured with `fail-build: true, severity-cutoff: critical` — any critical-severity vulnerability anywhere in the image, including unused packages pulled in by the base image, will block the push. A `tiff` CVE traced to `nginx-module-image-filter` (unused by this app) previously broke the build; removed via `RUN apk del nginx-module-image-filter` in the Dockerfile's production stage. If a future build fails on a new CVE, check whether the flagged package is actually used before assuming the app itself is affected.
+- **No alerting wired up.** CloudWatch has CPU/memory alarms configured (≥80%, 2×180s) but no SNS topic attached — they'd fire in the console but nobody gets notified.
+- **`desired_count = 2` runs constantly.** Two Fargate tasks stay up at all times (not scaled to zero), so this incurs ongoing AWS cost for the entire time the stack is deployed.
+- **ECS task definition has `lifecycle { ignore_changes = [task_definition] }`.** Terraform deliberately ignores changes to the task definition so that CI/CD — not Terraform — owns which image is running; running `terraform apply` won't revert a deploy made by the CD pipeline.
+- **All workflows cancel in-progress runs on re-trigger** (`concurrency: cancel-in-progress: true`) — re-running Apply or Destroy mid-flight kills the previous run rather than queuing behind it.
+
+## Future Improvements
+
+- **Multi-environment setup** — Separate test, staging, and prod environments rather than a single deployed environment.
+- **ALB access logging** — Enable access logs on the ALB to capture request-level errors and traffic patterns, currently no visibility beyond CloudWatch alarms.
+- **Cost tagging & budget alerts** — Tag resources by project and configure an AWS Budget alert, since `desired_count = 2` runs constantly and incurs cost regardless of usage.
+- **Separate Terraform Plan and Apply workflows** — Currently `apply.yaml` runs plan and apply together in one step. Splitting these would allow the plan output to be reviewed (and scanned) as its own gated step before a distinct Apply workflow executes the change.

@@ -1,5 +1,5 @@
 
-
+```bash
 ECS_Project
 ├── Dockerfile
 ├── docker.md
@@ -54,3 +54,4 @@ ECS_Project
     ├── terraform.md
     ├── terraform.tfvars.example
     └── variables.tf
+```

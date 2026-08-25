@@ -5,6 +5,7 @@
 Deploy the containerised IT Tools app on AWS using modular Terraform — VPC, IAM, ACM, ALB, ECR, ECS, CloudWatch — on ECS Fargate, reachable over HTTPS, with remote state in S3 and native locking.
 
 ## Project Structure
+
 .
 ├── backend.tf
 ├── main.tf
@@ -20,6 +21,8 @@ Deploy the containerised IT Tools app on AWS using modular Terraform — VPC, IA
 ├── provider.tf
 ├── terraform.tfvars.example
 └── variables.tf
+
+`.tfstate`/`.backup` are local artifacts, gitignored — real state lives in S3. `terraform.tfvars` holds real values (gitignored); `terraform.tfvars.example` is the committed template.
 
 ## Architecture Overview
 
@@ -42,6 +45,8 @@ Region: eu-west-2. Domain: mahadvo.com → it-tools.mahadvo.com. Flow: client �
 - `terraform.tfvars` (copy from `terraform.tfvars.example`) — `project_tag`, `my_domain` (needs its own manually-created hosted zone), `cluster_name`, `repo_name` (must already exist)
 - `provider.tf` — region, if not eu-west-2
 - AWS credentials — assumed to already be configured, not set by this code
+
+`dev_ip` is declared in `variables.tf` but currently unused — delete it or wire it back into a debug rule.
 
 ## Known Gotchas
 

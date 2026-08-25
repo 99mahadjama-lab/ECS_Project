@@ -137,8 +137,6 @@ Adjust the file paths/names to whatever you actually commit into docs/.
 
 - **Terraform version**: pinned to `1.15.7` throughout — set via `hashicorp/setup-terraform@v4` in both the Apply and Destroy pipelines, matching the version used locally when the `infra/` stack was originally built. Use the same version locally to avoid state/provider drift.
 - **Grype scan can fail the build on base-image CVEs.** CI is configured with `fail-build: true, severity-cutoff: critical` — any critical-severity vulnerability anywhere in the image, including unused packages pulled in by the base image, will block the push. A `tiff` CVE traced to `nginx-module-image-filter` (unused by this app) previously broke the build; removed via `RUN apk del nginx-module-image-filter` in the Dockerfile's production stage. If a future build fails on a new CVE, check whether the flagged package is actually used before assuming the app itself is affected.
-- **No alerting wired up.** CloudWatch has CPU/memory alarms configured (≥80%, 2×180s) but no SNS topic attached — they'd fire in the console but nobody gets notified.
-- **`desired_count = 2` runs constantly.** Two Fargate tasks stay up at all times (not scaled to zero), so this incurs ongoing AWS cost for the entire time the stack is deployed.
 - **ECS task definition has `lifecycle { ignore_changes = [task_definition] }`.** Terraform deliberately ignores changes to the task definition so that CI/CD — not Terraform — owns which image is running; running `terraform apply` won't revert a deploy made by the CD pipeline.
 - **All workflows cancel in-progress runs on re-trigger** (`concurrency: cancel-in-progress: true`) — re-running Apply or Destroy mid-flight kills the previous run rather than queuing behind it.
 

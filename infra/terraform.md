@@ -6,7 +6,7 @@ Deploy the containerised IT Tools app on AWS using modular Terraform — VPC, IA
 
 ## Project Structure
 
-![Project Structure](docs/project-structure.png)
+<img width="712" height="862" alt="image" src="https://github.com/user-attachments/assets/c34bf28a-0729-4695-8c6e-ca58656b37ae" />
 
 ## Architecture Overview
 

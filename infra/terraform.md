@@ -40,16 +40,26 @@ Region: eu-west-2. Domain: mahadvo.com → it-tools.mahadvo.com. Flow: client �
 - **ALB**: 443 open to world, health-checks `/health` on 3000, HTTPS listener depends on ACM validation, Route53 alias record routes traffic.
 - **ACM**: hosted zone is manually created and only ever read via `data` — never managed by Terraform — because destroying/recreating a Terraform-owned zone rotates nameservers and breaks the registrar link. Sibling modules (ACM ↔ ALB) can't reference each other directly, so values route through root.
 
+## Prerequisites
+
+Before running this Terraform, three categories of things need to already exist:
+
+**1. Manually created, external to any Terraform in this project**
+- Route53 hosted zone for `my_domain` — read via `data "aws_route53_zone" "primary"` in the ACM module, never created or destroyed by Terraform (destroying/recreating a Terraform-owned zone rotates nameservers and breaks the registrar link)
+- ECR repository (`var.repo_name`) — read via `data "aws_ecr_repository" "ecr_repo"` in the ECR module; the repo itself must be created out-of-band
+
+**2. Always-exists AWS-managed resources (nothing to provision, just referenced)**
+- S3 managed prefix list (`com.amazonaws.eu-west-2.s3`) — via `data "aws_ec2_managed_prefix_list" "s3"` in the ECR module
+- `AmazonECSTaskExecutionRolePolicy` — AWS-managed IAM policy, via `data "aws_iam_policy" "ecs_task_execute_policy"` in the IAM module
+
+**3. Provisioned separately by `bootstrap/`**
+See [bootstrap.md](../bootstrap/bootstrap.md) for details.
+
 ## Values You'll Need to Replace
 
-- `backend.tf` — S3 bucket name (yours will differ)
-- `terraform.tfvars` (copy from `terraform.tfvars.example`) — `project_tag`, `my_domain` (needs its own manually-created hosted zone), `cluster_name`, `repo_name` (must already exist)
-- `provider.tf` — region, if not eu-west-2
+- `backend.tf` — S3 bucket name (`ecs-bucket-160885277387-eu-west-2-an` is specific to this AWS account; yours will differ)
+- `terraform.tfvars` — `project_tag`, `my_domain` (needs its own manually-created hosted zone, per Prerequisites), `cluster_name`, `repo_name` (must already exist, per Prerequisites), `host_port`, `container_port`
+- `provider.tf` — region (`eu-west-2`), if deploying elsewhere
 - AWS credentials — assumed to already be configured, not set by this code
 
-`dev_ip` is declared in `variables.tf` but currently unused — delete it or wire it back into a debug rule.
 
-## Known Gotchas
-
-- **Stuck lock**: if a run doesn't exit cleanly, `terraform force-unlock <lock-id>`.
-- **.tfvars not loading**: only `terraform.tfvars` or `*.auto.tfvars` auto-load; anything else needs `-var-file`.

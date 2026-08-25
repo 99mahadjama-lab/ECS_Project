@@ -56,37 +56,16 @@ ECS_Project/
     ├── main.tf
     ├── modules
     │   ├── acm
-    │   │   ├── main.tf
-    │   │   ├── outputs.tf
-    │   │   └── variables.tf
     │   ├── alb
-    │   │   ├── main.tf
-    │   │   ├── outputs.tf
-    │   │   └── variables.tf
     │   ├── cloudwatch
-    │   │   ├── main.tf
-    │   │   ├── outputs.tf
-    │   │   └── variables.tf
     │   ├── ecr
-    │   │   ├── main.tf
-    │   │   ├── outputs.tf
-    │   │   └── variables.tf
     │   ├── ecs
-    │   │   ├── main.tf
-    │   │   ├── outputs.tf
-    │   │   └── variables.tf
-    │   ├── iam
-    │   │   ├── main.tf
-    │   │   └── outputs.tf
     │   └── vpc
-    │       ├── main.tf
-    │       ├── outputs.tf
-    │       └── variables.tf
     ├── outputs.tf
     ├── provider.tf
-    ├── terraform.md
     ├── terraform.tfvars.example
-    └── variables.tf
+    ├── variables.tf
+    └── terraform.md
 ```
 ## Docker
 

@@ -1,6 +1,6 @@
 
 ```bash
-ECS_Project
+ECS_Project/
 ├── Dockerfile
 ├── docker.md
 ├── .github

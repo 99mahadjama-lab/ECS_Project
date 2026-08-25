@@ -6,7 +6,24 @@ Deploy the containerised IT Tools app on AWS using modular Terraform — VPC, IA
 
 ## Project Structure
 
-<img width="712" height="862" alt="image" src="https://github.com/user-attachments/assets/c34bf28a-0729-4695-8c6e-ca58656b37ae" />
+```bash
+infra/
+├── backend.tf
+├── main.tf
+├── modules
+│   ├── acm
+│   ├── alb
+│   ├── cloudwatch
+│   ├── ecr
+│   ├── ecs
+│   ├── iam
+│   └── vpc
+├── outputs.tf
+├── provider.tf
+├── terraform.md
+├── terraform.tfvars.example
+└── variables.tf
+```
 
 ## Architecture Overview
 

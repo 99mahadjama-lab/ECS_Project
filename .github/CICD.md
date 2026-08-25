@@ -89,3 +89,6 @@ Note this is a different source of truth from Apply — Apply asks ECR "what's t
 - **Apply and Destroy resolve "the image tag" from two different sources** — Apply from ECR's push history, Destroy from ECS's live task definition — worth keeping in mind if the two ever disagree.
 - **Destroy's confirmation gate is a typed string checked in workflow logic**, not a GitHub environment protection rule — it works (see pipeline screenshots) but isn't backed by GitHub's built-in required-reviewers/environment gates.
 - **`terraform.tfvars` is written from a single secret (`TF_VARS`) at runtime** in both `apply.yaml` and `destroy.yaml` — never committed, only materializes inside the CI runner.
+---
+
+⬅️ Back to the [main README](../README.md) for the full project overview.

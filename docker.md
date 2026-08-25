@@ -50,3 +50,6 @@ docker build --no-cache -t it_tools_app .
 docker run -d --name it-tools-mahad --restart unless-stopped -p 8080:3000 it_tools_app:latest
 curl -i http://localhost:8080/health
 ```
+---
+
+⬅️ Back to the [main README](README.md) for the full project overview.

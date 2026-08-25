@@ -61,5 +61,8 @@ See [bootstrap.md](../bootstrap/bootstrap.md) for details.
 - `terraform.tfvars` — `project_tag`, `my_domain` (needs its own manually-created hosted zone, per Prerequisites), `cluster_name`, `repo_name` (must already exist, per Prerequisites), `host_port`, `container_port`
 - `provider.tf` — region (`eu-west-2`), if deploying elsewhere
 - AWS credentials — assumed to already be configured, not set by this code
+---
+
+⬅️ Back to the [main README](../README.md) for the full project overview.
 
 

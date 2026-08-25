@@ -23,3 +23,6 @@ Bootstrap runs once, before `infra/` is applied for the first time — but not e
 
 - **The S3 state bucket is a hard dependency.** `infra/backend.tf` points at it directly, and `terraform init` fails outright if the bucket doesn't already exist — this holds whether you run `infra/` manually or through CI/CD.
 - **The OIDC provider and IAM roles (`ecr_push`, `tf_ops`) are only for the pipelines.** They're what GitHub Actions assumes to push images and run Terraform. Running `infra/` manually with your own AWS credentials doesn't touch them at all.
+---
+
+⬅️ Back to the [main README](../README.md) for the full project overview.

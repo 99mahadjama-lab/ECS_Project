@@ -5,7 +5,6 @@
 Deploy the containerised IT Tools app on AWS using modular Terraform — VPC, IAM, ACM, ALB, ECR, ECS, CloudWatch — on ECS Fargate, reachable over HTTPS, with remote state in S3 and native locking.
 
 ## Project Structure
-
 .
 ├── backend.tf
 ├── main.tf

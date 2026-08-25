@@ -10,13 +10,13 @@ Deploy the containerised IT Tools app on AWS using modular Terraform — VPC, IA
 ├── backend.tf
 ├── main.tf
 ├── modules
-│ ├── acm
-│ ├── alb
-│ ├── cloudwatch
-│ ├── ecr
-│ ├── ecs
-│ ├── iam
-│ └── vpc
+│   ├── acm
+│   ├── alb
+│   ├── cloudwatch
+│   ├── ecr
+│   ├── ecs
+│   ├── iam
+│   └── vpc
 ├── outputs.tf
 ├── provider.tf
 ├── terraform.tfvars.example

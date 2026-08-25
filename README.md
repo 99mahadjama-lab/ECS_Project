@@ -109,7 +109,7 @@ ECS_Project/
 ```
 ## CI/CD
 
-## CI/CD Pipelines
+# CI/CD Pipelines
 | Workflow | Type | Purpose |
 |---|---|---|
 | CI – Build, Scan & Push | CI | Builds the Docker image, scans it for vulnerabilities with Grype, then pushes it to ECR |

@@ -6,23 +6,6 @@ This project demonstrates a full production-grade AWS deployment pipeline for IT
 
 link
 
-## Docker
-
-The app is built with a multi-stage, non-root Dockerfile — see [docker.md](docker.md) for the full breakdown.
-
-### Local Setup
-
-1. Clone the repo
-   `git clone <repo-url>`
-2. Build the image
-   `docker build -t it_tools_app .`
-3. Run the container
-   `docker run -d --name it-tools -p 8080:3000 it_tools_app:latest`
-4. Open your browser
-   `http://localhost:8080`
-
-No environment variables required — the app runs standalone.
-
 ## Architecture Diagram
 
 link
@@ -105,6 +88,27 @@ ECS_Project/
     ├── terraform.tfvars.example
     └── variables.tf
 ```
+## Docker
+
+The app is built with a multi-stage, non-root Dockerfile — see [docker.md](docker.md) for the full breakdown.
+
+### Local Setup
+
+1. Clone the repo
+   `git clone <repo-url>`
+2. Build the image
+   `docker build -t it_tools_app .`
+3. Run the container
+   `docker run -d --name it-tools -p 8080:3000 it_tools_app:latest`
+4. Open your browser
+   `http://localhost:8080`
+
+No environment variables required — the app runs standalone.
+
+## Terraform
+
+Infrastructure is provisioned across modular Terraform configs — see [terraform.md](infra/terraform.md) for the full breakdown.
+
 ## CI/CD
 
 ### CI/CD Pipelines

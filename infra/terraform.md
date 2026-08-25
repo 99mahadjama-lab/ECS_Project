@@ -6,23 +6,7 @@ Deploy the containerised IT Tools app on AWS using modular Terraform — VPC, IA
 
 ## Project Structure
 
-.
-├── backend.tf
-├── main.tf
-├── modules
-│   ├── acm
-│   ├── alb
-│   ├── cloudwatch
-│   ├── ecr
-│   ├── ecs
-│   ├── iam
-│   └── vpc
-├── outputs.tf
-├── provider.tf
-├── terraform.tfvars.example
-└── variables.tf
-
-`.tfstate`/`.backup` are local artifacts, gitignored — real state lives in S3. `terraform.tfvars` holds real values (gitignored); `terraform.tfvars.example` is the committed template.
+![Project Structure](docs/project-structure.png)
 
 ## Architecture Overview
 

@@ -29,7 +29,6 @@ link
 
 ### Infrastructure Overview
 
-```
 | Component | Purpose |
 |---|---|
 | Route 53 | DNS resolution for it-tools.mahadvo.com |
@@ -47,7 +46,6 @@ link
 | CloudWatch Logs | Collects container logs |
 | CloudWatch Logs VPC Endpoint | Lets Fargate tasks ship logs without going through NAT |
 | S3 (state bucket) | Stores Terraform remote state |
-```
 
 ## Project Structure
 

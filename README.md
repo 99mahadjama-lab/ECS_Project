@@ -1,4 +1,6 @@
-# Project Overview
+# IT Tools — AWS ECS Fargate Deployment
+
+## Project Overview
 
 This project demonstrates a full production-grade AWS deployment pipeline for IT Tools, an open source collection of handy developer utilities, built to show cloud and DevOps engineering skills including Terraform infrastructure as code, containerization, and CI/CD automation.
 

@@ -1,4 +1,4 @@
-## Project Overview
+# Project Overview
 
 This project demonstrates a full production-grade AWS deployment pipeline for IT Tools, an open source collection of handy developer utilities, built to show cloud and DevOps engineering skills including Terraform infrastructure as code, containerization, and CI/CD automation.
 
@@ -10,7 +10,7 @@ link
 
 The app is built with a multi-stage, non-root Dockerfile — see [docker.md](docker.md) for the full breakdown.
 
-## Local Setup
+### Local Setup
 
 1. Clone the repo
    `git clone <repo-url>`
@@ -27,9 +27,9 @@ No environment variables required — the app runs standalone.
 
 link
 
-## Infrastructure Overview
+### Infrastructure Overview
 
-```bash
+```
 | Component | Purpose |
 |---|---|
 | Route 53 | DNS resolution for it-tools.mahadvo.com |
@@ -109,7 +109,7 @@ ECS_Project/
 ```
 ## CI/CD
 
-# CI/CD Pipelines
+### CI/CD Pipelines
 | Workflow | Type | Purpose |
 |---|---|---|
 | CI – Build, Scan & Push | CI | Builds the Docker image, scans it for vulnerabilities with Grype, then pushes it to ECR |

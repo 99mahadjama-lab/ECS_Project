@@ -94,7 +94,8 @@ Infrastructure is provisioned across modular Terraform configs — see [terrafor
 ## CI/CD
 Four workflows handle build, scan, push, deploy, and infrastructure lifecycle end-to-end via GitHub Actions — see [CICD.md](.github/CICD.md) for the full breakdown, including prerequisites and the fetch-image-tag logic each one uses.
 
-### CI/CD Pipelines
+Before the Terraform Apply workflow can run, the [bootstrap](bootstrap/bootstrap.md) stack (OIDC provider, IAM roles, S3 state bucket) must already exist — see bootstrap.md for setup.
+
 ### CI/CD Pipelines
 | Workflow | Type | Purpose |
 |---|---|---|

@@ -1,0 +1,11 @@
+project_tag     = "your-project-tag"
+
+my_domain       = "yourdomain.com"
+
+cluster_name    = "your-cluster-name"
+
+repo_name       = "your-ecr-repo-name"
+
+host_port       = "your-host-port"
+
+container_port  = "your-container-port"

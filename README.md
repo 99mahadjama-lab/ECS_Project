@@ -108,7 +108,7 @@ ECS_Project/
     └── variables.tf
 ```
 ## CI/CD
-```
+
 ## CI/CD Pipelines
 | Workflow | Type | Purpose |
 |---|---|---|
@@ -116,4 +116,3 @@ ECS_Project/
 | CD – Deploy to ECS | CD | Fetches the current task definition, renders the new image into it, and deploys to ECS |
 | Terraform Apply | CD | Applies infrastructure changes to AWS |
 | Terraform Destroy | CD | Tears down AWS infrastructure, gated behind a confirmation phrase |
-```

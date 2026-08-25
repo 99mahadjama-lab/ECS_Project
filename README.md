@@ -48,6 +48,7 @@ ECS_Project/
 ├── Dockerfile
 ├── docker.md
 ├── bootstrap
+│   ├── bootstrap.md
 │   ├── main.tf
 │   ├── provider.tf
 │   └── variables.tf

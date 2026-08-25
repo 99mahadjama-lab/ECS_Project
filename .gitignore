@@ -45,5 +45,3 @@ terraform.tfstate.*
 *.pem
 terraform.tfstate
 terraform.tfstate.backup
-terraform.md
-docker.md

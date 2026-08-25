@@ -100,7 +100,7 @@ Infrastructure is provisioned across modular Terraform configs — see [terrafor
 | Terraform Apply | CD | Applies infrastructure changes to AWS |
 | Terraform Destroy | CD | Tears down AWS infrastructure, gated behind a confirmation phrase |
 
-##Pipeline Screenshots
+## Pipeline Screenshots
 
 CI – Build, Scan & Push
 Successful run showing the build, Grype vulnerability scan, and image push to ECR all passing.

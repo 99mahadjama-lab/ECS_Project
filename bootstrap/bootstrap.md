@@ -1,4 +1,4 @@
-# Bootstrap — One-Time AWS Setup for CI/CD
+# Bootstrap — One-Time AWS Setup for Terraform & CI/CD
 
 ## Goal
 

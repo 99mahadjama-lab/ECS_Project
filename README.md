@@ -10,7 +10,7 @@ This project demonstrates a full production-grade AWS deployment pipeline for IT
 
 ## Architecture Diagram
 
-<img width="750" height="828" alt="Screenshot 2026-08-25 at 13 49 15" src="https://github.com/user-attachments/assets/b943d6f9-de3c-42d4-a646-48440d40dc90" />
+<img width="726" height="804" alt="Screenshot 2026-08-26 at 09 32 12" src="https://github.com/user-attachments/assets/f05f464f-b494-49e1-ab2d-7adac4ba22ea" />
 
 ### Infrastructure Overview
 

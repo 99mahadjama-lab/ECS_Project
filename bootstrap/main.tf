@@ -1,3 +1,8 @@
+#ECR Repo
+resource "aws_ecr_repository" "it-tools-repo" {
+  name = "it-tools-repo"
+  image_tag_mutability = "IMMUTABLE"
+}
 #OIDC token creation
 resource "aws_iam_openid_connect_provider" "oidc_github" {
   url = "https://token.actions.githubusercontent.com"

@@ -88,6 +88,19 @@ resource "aws_lb_listener" "front_end" {
     Project             = var.project_tag
   }
 }
+resource "aws_lb_listener" "HTTP_Listener" {
+  load_balancer_arn     = aws_lb.IT-Tools_ALB.arn
+  port                  = "80"
+  protocol              = "HTTP"
+  default_action {
+    type                = "forward"
+    target_group_arn    = aws_lb_target_group.Target_Group.arn
+  } 
+  tags = {
+    Name                = "HTTP_Listener"
+    Project             = var.project_tag
+  }
+}
 #Direct traffic to ALB
 resource "aws_route53_record" "alias" {
   zone_id = var.hosted_zone

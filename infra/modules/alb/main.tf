@@ -71,8 +71,14 @@ resource "aws_lb" "IT-Tools_ALB" {
     Project             = var.project_tag
   }
 }
+<<<<<<< Updated upstream
 #ALB Listener
 resource "aws_lb_listener" "front_end" {
+=======
+
+#ALB Listeners
+resource "aws_lb_listener" "HTTPS_Listener" {
+>>>>>>> Stashed changes
   depends_on = [ var.cert_validated ]
   load_balancer_arn     = aws_lb.IT-Tools_ALB.arn
   port                  = "443"
@@ -83,7 +89,20 @@ resource "aws_lb_listener" "front_end" {
     target_group_arn    = aws_lb_target_group.Target_Group.arn
   } 
   tags = {
-    Name                = "Front_End_Listener"
+    Name                = "HTTPS_Listener"
+    Project             = var.project_tag
+  }
+}
+resource "aws_lb_listener" "HTTP_Listener" {
+  load_balancer_arn     = aws_lb.IT-Tools_ALB.arn
+  port                  = "80"
+  protocol              = "HTTP"
+  default_action {
+    type                = "forward"
+    target_group_arn    = aws_lb_target_group.Target_Group.arn
+  } 
+  tags = {
+    Name                = "HTTP_Listener"
     Project             = var.project_tag
   }
 }

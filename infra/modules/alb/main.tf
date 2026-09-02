@@ -11,6 +11,13 @@ resource "aws_security_group" "ALB_SG" {
     protocol            = "tcp"
     cidr_blocks         = ["0.0.0.0/0"] #tfsec:ignore:aws-ec2-no-public-ingress-sgr
   }
+    ingress {
+    description         = "Inbound HTTP"
+    from_port           = 80
+    to_port             = 80
+    protocol            = "tcp"
+    cidr_blocks         = ["0.0.0.0/0"] #tfsec:ignore:aws-ec2-no-public-ingress-sgr
+  }
 
   egress {
     description         = "Outbound HTTP" 

@@ -11,6 +11,13 @@ resource "aws_security_group" "ALB_SG" {
     protocol            = "tcp"
     cidr_blocks         = ["0.0.0.0/0"] #tfsec:ignore:aws-ec2-no-public-ingress-sgr
   }
+    ingress {
+    description         = "Inbound HTTP"
+    from_port           = 80
+    to_port             = 80
+    protocol            = "tcp"
+    cidr_blocks         = ["0.0.0.0/0"] #tfsec:ignore:aws-ec2-no-public-ingress-sgr
+  }
 
   egress {
     description         = "Outbound HTTP" 
@@ -71,6 +78,7 @@ resource "aws_lb" "IT-Tools_ALB" {
     Project             = var.project_tag
   }
 }
+
 #ALB Listener
 resource "aws_lb_listener" "front_end" {
   depends_on = [ var.cert_validated ]
@@ -83,17 +91,21 @@ resource "aws_lb_listener" "front_end" {
     target_group_arn    = aws_lb_target_group.Target_Group.arn
   } 
   tags = {
-    Name                = "HTTPS_Listener"
+    Name                = "Front_End_Listener"
     Project             = var.project_tag
   }
 }
 resource "aws_lb_listener" "HTTP_Listener" {
   load_balancer_arn     = aws_lb.IT-Tools_ALB.arn
   port                  = "80"
-  protocol              = "HTTP"
+  protocol              = "HTTP" #tfsec:ignore:aws-elb-http-not-used
   default_action {
-    type                = "forward"
-    target_group_arn    = aws_lb_target_group.Target_Group.arn
+    type                = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
   } 
   tags = {
     Name                = "HTTP_Listener"

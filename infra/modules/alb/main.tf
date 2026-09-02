@@ -71,7 +71,6 @@ resource "aws_lb" "IT-Tools_ALB" {
     Project             = var.project_tag
   }
 }
-
 #ALB Listener
 resource "aws_lb_listener" "front_end" {
   depends_on = [ var.cert_validated ]

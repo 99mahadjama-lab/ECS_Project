@@ -71,14 +71,8 @@ resource "aws_lb" "IT-Tools_ALB" {
     Project             = var.project_tag
   }
 }
-<<<<<<< Updated upstream
 #ALB Listener
 resource "aws_lb_listener" "front_end" {
-=======
-
-#ALB Listeners
-resource "aws_lb_listener" "HTTPS_Listener" {
->>>>>>> Stashed changes
   depends_on = [ var.cert_validated ]
   load_balancer_arn     = aws_lb.IT-Tools_ALB.arn
   port                  = "443"

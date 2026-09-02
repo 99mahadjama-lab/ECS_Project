@@ -4,9 +4,6 @@ variable "project_tag" {
 variable "my_domain" {
   type = string
 }
-variable "dev_ip" {
-  type = string
-}
 variable "cluster_name" {
   type = string
 }

@@ -1,6 +1,9 @@
 #Calling VPC Module
 module "VPC_Module" {
   source                    = "./modules/vpc"
+  ecs_sg                    = module.ECS_Module.ECS_SG
+  # ecs_sg_id                 = module.ECS_Module.security_group_id
+  prefix_list               = module.ECR_Module.prefix_list.id
   project_tag               = var.project_tag
 }
 #Calling IAM Module

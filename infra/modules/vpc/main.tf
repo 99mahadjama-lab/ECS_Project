@@ -32,6 +32,11 @@ resource "aws_internet_gateway" "IT-Tools_IGW" {
 resource "aws_nat_gateway" "IT-Tools_NGW" {
   vpc_id               = aws_vpc.IT-Tools_VPC.id
   availability_mode    = "regional"
+  
+  tags = {
+    Name               = "IT-Tools_NGW"
+    Project            = var.project_tag
+  }
 }
 #Route Tables
 resource "aws_route_table" "Public_Route" {

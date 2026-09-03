@@ -9,6 +9,7 @@ module "VPC_Module" {
 #Calling IAM Module
 module "IAM_Module" {
   source                    = "./modules/iam"
+  project_tag               = var.project_tag
 }
 # Calling ACM Module
 module "ACM_Module" {

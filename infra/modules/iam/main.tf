@@ -18,6 +18,10 @@ resource "aws_iam_role" "ecs_task_execute_role" {
       },
     ]
   })
+  tags = {
+    Name                = "ECS-Task-Execute-Role"
+    Project             = var.project_tag
+  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_execute_role_policy_attachment" {
   role = aws_iam_role.ecs_task_execute_role.name

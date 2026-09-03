@@ -18,6 +18,11 @@ resource "aws_cloudwatch_metric_alarm" "CPUUtilization" {
   period                    = 180
   statistic                 = "Average"
   threshold                 = 80
+
+  tags = {
+    Name                = "CPU_Alarm"
+    Project             = var.project_tag
+  }
 }
 resource "aws_cloudwatch_metric_alarm" "MemoryUtilization" {
   alarm_description         = "This metric monitors memory utilization"
@@ -29,4 +34,9 @@ resource "aws_cloudwatch_metric_alarm" "MemoryUtilization" {
   period                    = 180
   statistic                 = "Average"
   threshold                 = 80
+  
+  tags = {
+    Name                = "Memory_Alarm"
+    Project             = var.project_tag
+  }
 }

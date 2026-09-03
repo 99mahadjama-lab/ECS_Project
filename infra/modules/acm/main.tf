@@ -13,6 +13,11 @@ resource "aws_route53domains_registered_domain" "my_domain" {
       name = name_server.value
     }
   }
+  
+  tags = {
+    Name                = "IT-Tools-Domain"
+    Project             = var.project_tag
+  }
 }
 provider "aws" {
   alias  = "us_east_1"

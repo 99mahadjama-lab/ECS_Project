@@ -2,6 +2,11 @@
 resource "aws_ecr_repository" "it-tools-repo" {
   name = "it-tools-repo"
   image_tag_mutability = "IMMUTABLE"
+  
+  tags = {
+    Name               = "IT-Tools-ECR-Repo"
+    Project            = var.project_tag
+  } 
 }
 #OIDC token creation
 resource "aws_iam_openid_connect_provider" "oidc_github" {
@@ -10,6 +15,10 @@ resource "aws_iam_openid_connect_provider" "oidc_github" {
   client_id_list = [
     "sts.amazonaws.com",
   ]
+  tags = {
+    Name               = "GitHub-OIDC-Provider"
+    Project            = var.project_tag
+  }
 }
 #IAM Role creation for ecr push
 resource "aws_iam_role" "ecr_push" {
@@ -35,8 +44,8 @@ resource "aws_iam_role" "ecr_push" {
 })
 
   tags = {
+    Name = "ECR-Push-Role"
     project_tag = "IT-Tools"
-    tag-key     = "ecr_push"
   }
 }
 resource "aws_iam_policy" "push_to_ecr" {
@@ -64,6 +73,11 @@ resource "aws_iam_policy" "push_to_ecr" {
         }
     ]
   })
+  
+  tags = {
+    Name = "Push-To-ECR-Policy"
+    project_tag = var.project_tag
+  }
 }
 resource "aws_iam_policy_attachment" "ecr_attach" {
   name        = "ecr_attach_policy"
@@ -95,8 +109,8 @@ resource "aws_iam_role" "tf_ops" {
 })
 
   tags = {
-    project_tag = "IT-Tools"
-    tag-key     = "tf_apply"
+    Name = "TF-Ops-Role"
+    Project = var.project_tag
   }
 }
 
@@ -144,6 +158,11 @@ resource "aws_iam_policy" "terraform_ops" {
       }
     ]
   })
+  
+  tags = {
+    Name = "Terraform-Ops-Policy"
+    Project = var.project_tag
+  }
 }
 
 resource "aws_iam_policy_attachment" "tf_ops_attach" {
@@ -160,7 +179,7 @@ resource "aws_s3_bucket" "state-file-bucket" {
   tags = {
     Name        = "${var.project_name}-stfb"
     Environment = var.Environment
-    project_tag = var.project_name
+    Project = var.project_name
   }
 }
 #Ensuring S3 bucket ACL's cannot be ammended after creation

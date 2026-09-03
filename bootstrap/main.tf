@@ -177,9 +177,9 @@ resource "aws_s3_bucket" "state-file-bucket" {
   bucket_namespace = "account-regional"
 
   tags = {
-    Name        = "${var.project_name}-stfb"
+    Name        = "${var.project_tag}-stfb"
     Environment = var.Environment
-    Project = var.project_name
+    Project = var.project_tag
   }
 }
 #Ensuring S3 bucket ACL's cannot be ammended after creation

@@ -16,9 +16,6 @@ variable "branch" {
 variable "ecr_repo" {
   type = string
 }
-variable "project_name" {
-  type = string
-}
 variable "Environment" {
   type = string
 }

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project demonstrates a full production-grade AWS deployment pipeline for IT Tools, an open source collection of handy developer utilities, built to show cloud and DevOps engineering skills including Terraform infrastructure as code, containerization, and CI/CD automation.
+This project demonstrates a full production-grade AWS deployment pipeline for IT Tools, an open source collection of handy developer utilities. Built to show cloud and DevOps engineering skills including Terraform infrastructure as code, containerization, and CI/CD automation.
 
 ## App Demo
 
@@ -74,7 +74,7 @@ ECS_Project/
 ```
 ## Docker
 
-The app is built with a multi-stage, non-root Dockerfile — see [docker.md](docker.md) for the full breakdown.
+The app is built with a multi-stage, non-root Dockerfile. See [docker.md](docker.md) for the full breakdown.
 
 ### Local Setup
 
@@ -87,16 +87,16 @@ The app is built with a multi-stage, non-root Dockerfile — see [docker.md](doc
 4. Open your browser
    `http://localhost:8080`
 
-No environment variables required — the app runs standalone.
+No environment variables required, the app runs standalone.
 
 ## Terraform
 
-Infrastructure is provisioned across modular Terraform configs — see [terraform.md](infra/terraform.md) for the full breakdown.
+Infrastructure is provisioned across modular Terraform configs. See [terraform.md](infra/terraform.md) for the full breakdown.
 
 ## CI/CD
-Four workflows handle build, scan, push, deploy, and infrastructure lifecycle end-to-end via GitHub Actions — see [CICD.md](.github/CICD.md) for the full breakdown, including prerequisites and the fetch-image-tag logic each one uses.
+Four workflows handle build, scan, push, deploy, and infrastructure lifecycle end-to-end via GitHub Actions. See [CICD.md](.github/CICD.md) for the full breakdown, including prerequisites and the fetch-image-tag logic each one uses.
 
-Before the Terraform Apply workflow can run, the [bootstrap](bootstrap/bootstrap.md) stack (OIDC provider, IAM roles, S3 state bucket) must already exist — see bootstrap.md for setup.
+Before the Terraform Apply workflow can run, the [bootstrap](bootstrap/bootstrap.md) stack (OIDC provider, IAM roles, S3 state bucket) must already exist. See bootstrap.md for setup.
 
 ### CI/CD Pipelines
 | Workflow | Type | Purpose |
@@ -142,10 +142,10 @@ A run with the correct confirmation phrase, showing terraform destroy executing 
 
 ## Considerations
 
-- **Terraform version**: pinned to `1.15.7` throughout — set via `hashicorp/setup-terraform@v4` in both the Apply and Destroy pipelines, matching the version used locally when the `infra/` stack was originally built. Use the same version locally to avoid state/provider drift.
-- **Grype scan can fail the build on base-image CVEs.** CI is configured with `fail-build: true, severity-cutoff: critical` — any critical-severity vulnerability anywhere in the image, including unused packages pulled in by the base image, will block the push. A `tiff` CVE traced to `nginx-module-image-filter` (unused by this app) previously broke the build; removed via `RUN apk del nginx-module-image-filter` in the Dockerfile's production stage. If a future build fails on a new CVE, check whether the flagged package is actually used before assuming the app itself is affected.
-- **ECS task definition has `lifecycle { ignore_changes = [task_definition] }`.** Terraform deliberately ignores changes to the task definition so that CI/CD — not Terraform — owns which image is running; running `terraform apply` won't revert a deploy made by the CD pipeline.
-- **All workflows cancel in-progress runs on re-trigger** (`concurrency: cancel-in-progress: true`) — re-running Apply or Destroy mid-flight kills the previous run rather than queuing behind it.
+- **Terraform version**: pinned to `1.15.7` throughout. Set via `hashicorp/setup-terraform@v4` in both the Apply and Destroy pipelines, matching the version used locally when the `infra/` stack was originally built. Use the same version locally to avoid state/provider drift.
+- **Grype scan can fail the build on base-image CVEs.** CI is configured with `fail-build: true, severity-cutoff: critical`, so any critical-severity vulnerability anywhere in the image, including unused packages pulled in by the base image, will block the push. A `tiff` CVE traced to `nginx-module-image-filter` (unused by this app) previously broke the build, removed via `RUN apk del nginx-module-image-filter` in the Dockerfile's production stage. If a future build fails on a new CVE, check whether the flagged package is actually used before assuming the app itself is affected.
+- **ECS task definition has `lifecycle { ignore_changes = [task_definition] }`.** Terraform deliberately ignores changes to the task definition so that CI/CD, not Terraform, owns which image is running. Running `terraform apply` won't revert a deploy made by the CD pipeline.
+- **All workflows cancel in-progress runs on re-trigger** (`concurrency: cancel-in-progress: true`). Re-running Apply or Destroy mid-flight kills the previous run rather than queuing behind it.
 
 ## Future Improvements
 

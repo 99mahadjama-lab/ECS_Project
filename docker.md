@@ -2,7 +2,7 @@
 
 ## Goal
 
-Multi-stage Docker build for the IT Tools Vue/TypeScript SPA. Build stage compiles static assets; production stage serves them via nginx as a non-root user on a non-privileged port, with no build tooling in the final image.
+Multi-stage Docker build for the IT Tools Vue/TypeScript SPA. Build stage compiles static assets, production stage serves them via nginx as a non-root user on a non-privileged port, with no build tooling in the final image.
 
 ## Dockerfile
 
@@ -33,11 +33,11 @@ EXPOSE 3000
 ## Key decisions
 
 - **Manifest-first COPY**: `package.json`/`pnpm-lock.yaml` copied before source so `pnpm install` stays cached across rebuilds where only app code changed.
-- **Non-root user**: nginx runs as `nonroot` for a better container security posture. This forces port 3000 instead of 80, since binding <1024 requires root — this didn't surface locally (Docker Desktop relaxes the restriction) but broke on ECS Fargate, which doesn't.
+- **Non-root user**: nginx runs as `nonroot` for a better container security posture. This forces port 3000 instead of 80, since binding to anything under 1024 requires root. Didn't surface locally because Docker Desktop relaxes the restriction, but broke on ECS Fargate, which doesn't.
 - **`chown` on nginx dirs**: required once non-root, since nginx needs explicit write permission on conf, cache, log, and runtime dirs it could access freely as root.
 - **`rm -f default.conf`**: the stock config also listens on port 80 and loads alongside the custom config (`conf.d/*.conf` includes both), so it's removed to stop it winning as the default server.
-- **`apk del nginx-module-image-filter`**: removes a package flagged by a Grype vulnerability scan (`tiff` CVE) in CI — not used by the app, so dropped from the production image.
-- **`COPY --from` paths**: resolve from the source stage's filesystem root, not its `WORKDIR` — hence `app/dist`, not `./dist`.
+- **`apk del nginx-module-image-filter`**: removes a package flagged by a Grype vulnerability scan (`tiff` CVE) in CI. Not used by the app, so dropped from the production image.
+- **`COPY --from` paths**: resolve from the source stage's filesystem root, not its `WORKDIR`, hence `app/dist`, not `./dist`.
 
 ## nginx config
 

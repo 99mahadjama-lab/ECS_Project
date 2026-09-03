@@ -6,11 +6,11 @@ This project demonstrates a full production-grade AWS deployment pipeline for IT
 
 ## App Demo
 
-<img width="1716" height="566" alt="Screenshot 2026-08-25 at 17 06 50" src="https://github.com/user-attachments/assets/0ccb194e-e250-454b-8bae-10adbac60140" />
+<img width="1716" height="566" alt="app_demo" src="https://github.com/user-attachments/assets/b486a532-3c20-4cb1-a407-6afa5e936da0" />
 
 ## Architecture Diagram
 
-<img width="726" height="804" alt="Screenshot 2026-08-26 at 09 32 12" src="https://github.com/user-attachments/assets/f05f464f-b494-49e1-ab2d-7adac4ba22ea" />
+<img width="726" height="804" alt="final_arch_diagram" src="https://github.com/user-attachments/assets/8a806e34-37be-49b9-b110-1b76117d3cd8" />
 
 ### Infrastructure Overview
 
@@ -112,33 +112,33 @@ CI – Build, Scan & Push
 
 Successful run showing the build, Grype vulnerability scan, and image push to ECR all passing.
 
-<img width="3432" height="1610" alt="image" src="https://github.com/user-attachments/assets/c1bef75e-bd1f-4bdb-b075-f9f4c4256c1d" />
+<img width="1716" height="805" alt="build_scan_push_success" src="https://github.com/user-attachments/assets/86d928fa-6210-4a2d-8c72-145a9d6953b6" />
 
 CD – Deploy to ECS
 
 Successful run rendering the new task definition and deploying it to the ECS service.
 
-<img width="3418" height="1002" alt="image" src="https://github.com/user-attachments/assets/716420cf-2d85-4e52-a359-35f78d133b5e" />
+<img width="1709" height="501" alt="ecs_deploy_success" src="https://github.com/user-attachments/assets/9bf436c9-70d2-496f-997a-a15f2a3ac83d" />
 
 Terraform Apply Pipeline
 
 Successful run showing the security scan followed by terraform apply provisioning the infrastructure.
 
-<img width="3392" height="1658" alt="image" src="https://github.com/user-attachments/assets/a7e5b1bb-82a2-4626-a062-4177068f28e5" />
+<img width="1696" height="829" alt="tf_apply_success" src="https://github.com/user-attachments/assets/8808a783-4f67-4a69-951f-e7f0d6fd98ad" />
 
 Terraform Destroy Pipeline — safety gate
 
 A run where the confirmation phrase didn't match, so the destroy step was correctly skipped.
 
-<img width="3436" height="1342" alt="image" src="https://github.com/user-attachments/assets/3f4332e0-418e-4969-9531-246f06b25a61" />
+<img width="1718" height="671" alt="tf_destroy_cancelled" src="https://github.com/user-attachments/assets/3e53f064-d49b-4fea-83e6-071b6c2ea910" />
 
 Terraform Destroy Pipeline — successful run
 
 A run with the correct confirmation phrase, showing terraform destroy executing successfully.
 
-<img width="3214" height="968" alt="image" src="https://github.com/user-attachments/assets/9de668f0-d49a-41ba-a1bf-b0fb3b5d0d36" />
+<img width="1607" height="484" alt="tf_destroy_input_required" src="https://github.com/user-attachments/assets/266805a2-e981-4acc-b15b-af8766a54d59" />
 
-<img width="3400" height="1568" alt="image" src="https://github.com/user-attachments/assets/88c61c28-8ee7-4308-b008-f2949b80de01" />
+<img width="1700" height="784" alt="tf_destroy_success" src="https://github.com/user-attachments/assets/34499c01-eb96-4689-8ff3-9d53da87e5a1" />
 
 ## Considerations
 

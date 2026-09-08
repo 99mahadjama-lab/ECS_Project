@@ -51,12 +51,15 @@ Benchmarked this multi-stage build against a deliberately naive single-stage equ
 
 **Single-stage build time (no-cache)**
 
+<img width="532" height="45" alt="Bulky_build_time" src="https://github.com/user-attachments/assets/4b5de0c7-0992-4660-a949-5a200dc06e0c" />
 
 **Multi-stage build time (no-cache)**
 
+<img width="641" height="46" alt="Multistage_build_time" src="https://github.com/user-attachments/assets/646c1d56-7f4e-4c3e-b6a3-80b520ede139" />
 
 **Image size comparison**
 
+<img width="882" height="71" alt="image_comparison" src="https://github.com/user-attachments/assets/bd1a7ec9-4162-46ad-a07e-d689d0282f51" />
 
 ## nginx config
 

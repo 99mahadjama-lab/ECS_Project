@@ -45,3 +45,4 @@ terraform.tfstate.*
 *.pem
 terraform.tfstate
 terraform.tfstate.backup
+dockerfolder

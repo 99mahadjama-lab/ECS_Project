@@ -39,6 +39,25 @@ EXPOSE 3000
 - **`apk del nginx-module-image-filter`**: removes a package flagged by a Grype vulnerability scan (`tiff` CVE) in CI. Not used by the app, so dropped from the production image.
 - **`COPY --from` paths**: resolve from the source stage's filesystem root, not its `WORKDIR`, hence `app/dist`, not `./dist`.
 
+## Multi-stage vs single-stage: measured impact
+
+Benchmarked this multi-stage build against a deliberately naive single-stage equivalent (same app, no stage separation) to quantify the impact of the pattern. With a cold, no-cache build for both:
+
+| | Single-stage | Multi-stage | Improvement |
+|---|---|---|---|
+| Build time | 74.2s | 47.9s | ~35% faster |
+| Disk usage | 2.8GB | 119MB | ~96% smaller |
+| Content size | 563MB | 32.8MB | ~94% smaller |
+
+**Single-stage build time (no-cache)**
+
+
+**Multi-stage build time (no-cache)**
+
+
+**Image size comparison**
+
+
 ## nginx config
 
 SPA fallback (`try_files ... /index.html`) so client-side routes don't 404 on direct load/refresh, plus a `/health` endpoint for ECS/ALB health checks.

@@ -9,7 +9,7 @@ RUN pnpm build
 
 #Production Stage
 FROM nginx:stable-alpine AS production
-RUN apk del nginx-module-image-filter
+RUN apk del nginx-module-image-filter && apk add zlib=1.4-r0
 COPY --from=build app/dist /usr/share/nginx/html
 COPY --from=build app/nginx.conf /etc/nginx/conf.d/
 RUN addgroup -g 1000 -S nonroot \

@@ -15,7 +15,6 @@ COPY --from=build app/nginx.conf /etc/nginx/conf.d/
 RUN addgroup -g 1000 -S nonroot \
 && adduser -S nonroot -u 1000 -g nonroot
 RUN rm -f /etc/nginx/conf.d/default.conf
-RUN chown nonroot:nonroot /etc/nginx/conf.d /usr/share/nginx/html \ 
-/var/cache/nginx /var/log/nginx /run/
+RUN chown nonroot:nonroot /var/cache/nginx /var/log/nginx /run/
 USER nonroot
 EXPOSE 3000
